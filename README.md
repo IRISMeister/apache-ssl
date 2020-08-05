@@ -45,6 +45,7 @@ $ docker-compose down
 ```
 
 ## テスト
+```bash
 $ curl --cacert /etc/ssl/demoCA/cacert.pem https://irishost.localdomain/
 <html>
     <body>
@@ -52,7 +53,7 @@ $ curl --cacert /etc/ssl/demoCA/cacert.pem https://irishost.localdomain/
     </body>
 </html>
 $ 
-
+```
 ## 参考
 コンテナからオリジナルのconfを抽出する方法
 ```bash
