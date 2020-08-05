@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  apache:
+    image: httpd:2.4
+    init: true
+    hostname: apache
+
+    ports:
+      - 80:80
+      - 443:443
+
+    volumes:
+    # ISC = InterSystems IRIS install dir
+    - $PWD/htdocs:/usr/local/apache2/htdocs/ 
+    - $PWD/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    - $PWD/conf/extra/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+    - $PWD/conf/server.crt:/usr/local/apache2/conf/server.crt
+    - $PWD/conf/server.key:/usr/local/apache2/conf/server.key
+    
+    environment:
+    - TZ=JST-9
