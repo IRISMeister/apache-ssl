@@ -1,0 +1,11 @@
+{
+    "objectscript.conn": {
+        "host": "irishost.localdomain",
+        "https": true,
+        "port": 443,
+        "ns": "USER",
+        "username": "SuperUser",
+        "password": "SYS",
+        "active": true
+    }
+}

@@ -5,10 +5,10 @@ default_md = sha256
 distinguished_name = dn
 
 [dn]
-C=xxx
-ST=xxx
-L=xxx
-O=xxx
-OU=xxx
+C=xx
+ST=xx
+L=xx
+O=xx
+OU=xx
 emailAddress=yyy@yyy
-CN = irishost.localdomain
+CN = httphost.localdomain

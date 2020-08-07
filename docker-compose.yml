@@ -5,14 +5,12 @@ services:
     image: httpd:2.4
     init: true
     hostname: apache
-
-    ports:
-      - 80:80
-      - 443:443
+    network_mode: "host"
 
     volumes:
     # ISC = InterSystems IRIS install dir
     - $PWD/htdocs:/usr/local/apache2/htdocs/ 
+    - $PWD/conf/other/:/usr/local/apache2/conf/other/
     - $PWD/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
     - $PWD/conf/extra/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
     - $PWD/conf/server.crt:/usr/local/apache2/conf/server.crt
@@ -20,3 +18,4 @@ services:
     
     environment:
     - TZ=JST-9
+
