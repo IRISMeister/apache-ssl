@@ -37,8 +37,8 @@ $ cd apache-ssl
 $ openssl req -x509 -nodes -days 1 -newkey rsa:2048 -subj /CN=* -keyout conf/server.key -out conf/server.crt
 ```
 
-* 自前のCA(いわゆるオレオレ認証局)を使用する方法
-(必要であれば)ブラウザ警告をなくせる。  
+* 自前のCA(いわゆるオレオレ認証局)を使用する方法  
+(必要であれば)ブラウザのセキュリティ警告をなくせる。  
 必要に応じて[dn]セクションのxxになっている箇所を編集
 ```bash
 sudo mkdir -p /etc/ssl/myCA/private
@@ -121,7 +121,7 @@ curl --cacert /etc/ssl/myCA/cacert.pem https://httphost.localdomain/csp/sys/Util
 https://ec2のパブリックDNS/csp/sys/UtilHome.csp  
 
 
-* 警告を出さないようにしたい場合  
+* セキュリティ警告を出さないようにしたい場合  
 ルート証明書ストアにcacert.derを追加。  
 サーバ認証されているホスト名とURLが一致するように、実行するPCのhostsファイル(C:\Windows\System32\drivers\etc\hosts)に、下記のようにhttphost.localdomainを追加。
 ```
