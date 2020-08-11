@@ -89,7 +89,7 @@ sudo openssl x509 -inform PEM -outform DER -in /etc/ssl/myCA/cacert.pem -out /et
 Windowsであれば、cacert.derを「ルート証明書ストア」に登録する。
 
 ## apache起動
-IRISが起動していること確認。接続先のIRISが別ホストに存在する場合はiris.confのURLを編集。
+IRISが起動していること確認。接続先のIRISが別ホストに存在する場合は[iris.conf](conf/other/iris.conf)のURLを編集。
 ```bash
 docker-compose up -d
 ```
