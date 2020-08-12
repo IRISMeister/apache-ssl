@@ -39,54 +39,10 @@ $ openssl req -x509 -nodes -days 1 -newkey rsa:2048 -subj /CN=* -keyout conf/ser
 
 * 自前のCA(いわゆるオレオレ認証局)を使用する方法  
 (必要であれば)ブラウザのセキュリティ警告をなくせる。  
-必要に応じて[dn]セクションのxxになっている箇所を編集
+必要に応じてcsr.cnfの[dn]セクションのxxになっている箇所を編集
 ```bash
-sudo mkdir -p /etc/ssl/myCA/private
-sudo mkdir /etc/ssl/httphost
-sudo cp extv3/csr.cnf /etc/ssl/myCA
-sudo cp extv3/csr.ext /etc/ssl/httphost
-sudo vi /etc/ssl/myCA/csr.cnf
+./setup.sh
 ```
-opensslにてCAを構成する。以下、実行例。
-```bash
-sudo openssl req -x509 -nodes -newkey rsa:2048 -out /etc/ssl/myCA/cacert.pem -keyout /etc/ssl/myCA/private/cakey.pem -config /etc/ssl/myCA/csr.cnf -days 3650
-tree --charset=C /etc/ssl/myCA
-/etc/ssl/myCA
-|-- cacert.pem
-|-- csr.cnf
-`-- private
-    `-- cakey.pem
-```
-サーバ証明書を発行する。以下、実行例。  
-(存在しなければ)適当な設定でdemoCAをセットアップ。
-```bash
-/usr/lib/ssl/misc/CA.pl -newca
-```
-以下、上記で作成されたCA(demoCA)は使用しませんが、/etc/ssl/demoCA下のindex.txtなどは流用します。
-```bash
-sudo openssl req -new -sha256 -nodes -newkey rsa:2048 -out /etc/ssl/httphost/server.csr -keyout /etc/ssl/httphost/server.key -config /etc/ssl/myCA/csr.cnf
-pushd /etc/ssl # move here 
-sudo openssl ca -in httphost/server.csr -out httphost/server.crt -cert myCA/cacert.pem -keyfile myCA/private/cakey.pem -extfile httphost/csr.ext -days 3650
-tree --charset=C httphost
-httphost
-|-- csr.ext
-|-- server.crt
-|-- server.csr
-`-- server.key
-cat demoCA/index.txt
-V       230807033745Z           76565CB133C25E2B4E7D4D3788E98046D23C589A        unknown /C=JA/ST=Osaka/O=zzz/OU=zz/CN=foo@bar
-V       300805034708Z           76565CB133C25E2B4E7D4D3788E98046D23C589B        unknown /C=xx/ST=xx/O=xx/OU=xx/CN=httphost.localdomain/emailAddress=yyy@yyy
-popd
-cp /etc/ssl/httphost/server.crt conf/
-sudo cp /etc/ssl/httphost/server.key conf/
-```
-
-おまけ  
-ブラウザにCAを認識させるためには、下記のフォーマット変換が必要です。
-```bash
-sudo openssl x509 -inform PEM -outform DER -in /etc/ssl/myCA/cacert.pem -out /etc/ssl/myCA/cacert.der
-```
-Windowsであれば、cacert.derを「ルート証明書ストア」に登録する。
 
 ## apache起動
 IRISが起動していること確認。接続先のIRISが別ホストに存在する場合は[iris.conf](conf/other/iris.conf)のURLを編集。
@@ -104,7 +60,7 @@ ERROR: for apache-ssl_apache_1  Cannot start service apache: OCI runtime create 
 オレオレ証明書の場合
 curl --insecure https://localhost/csp/sys/UtilHome.csp
 オレオレ認証局の場合
-curl --cacert /etc/ssl/myCA/cacert.pem https://httphost.localdomain/csp/sys/UtilHome.csp
+curl --cacert ~/testca/int/intcert.pem https://httphost.localdomain/csp/sys/UtilHome.csp
 <html>
 <head>
         <title>ログイン IRIS</title>
@@ -118,7 +74,7 @@ curl --cacert /etc/ssl/myCA/cacert.pem https://httphost.localdomain/csp/sys/Util
 ## 手元のPCからのテスト
 * 警告が出ても良い場合  
 手元のPCからChrome/FireFoxなどで下記URLにてアクセス可能であることを確認。  
-https://ec2のパブリックDNS/csp/sys/UtilHome.csp  
+https://apacheが起動しているホスト/csp/sys/UtilHome.csp  
 
 
 * セキュリティ警告を出さないようにしたい場合  
