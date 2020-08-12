@@ -17,7 +17,7 @@ $ sudo usermod -aG docker your-user
 ```
 docker-compose導入済み。  
 https://docs.docker.com/compose/install/
-```bash
+```Shell
 $ docker-compose version
 docker-compose version 1.26.2, build eefe0d31
 docker-py version: 4.2.2
@@ -59,11 +59,16 @@ ERROR: for apache-ssl_apache_1  Cannot start service apache: OCI runtime create 
 ```
 
 ## ホスト上でのテスト
-```bash
 オレオレ証明書の場合
+```bash
 curl --insecure https://localhost/csp/sys/UtilHome.csp
+```
 オレオレ認証局の場合
+```bash
 curl --cacert ~/testca/all.pem https://httphost.localdomain/csp/sys/UtilHome.csp
+```
+アクセス成功の場合、下記のようなhtml(ログインページ)が出力されます。
+```html
 <html>
 <head>
         <title>ログイン IRIS</title>
