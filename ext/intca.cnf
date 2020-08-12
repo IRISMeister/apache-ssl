@@ -1,4 +1,5 @@
 [ v3_ca ]
+authorityKeyIdentifier=keyid:always,issuer
 basicConstraints = CA:true, pathlen:0
 keyUsage = cRLSign, keyCertSign
 nsCertType = sslCA, emailCA

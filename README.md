@@ -38,8 +38,8 @@ $ openssl req -x509 -nodes -days 1 -newkey rsa:2048 -subj /CN=* -keyout conf/ser
 ```
 
 * 自前のCA(いわゆるオレオレ認証局)を使用する方法  
-(必要であれば)ブラウザのセキュリティ警告をなくせる。  
-必要に応じてcsr.cnfの[dn]セクションのxxになっている箇所を編集
+必要であればブラウザのセキュリティ警告をなくせる。  
+必要に応じてext/server.cnfのDNS.1及びsetup.shのdomain環境変数値を編集。
 ```bash
 ./setup.sh
 ```
@@ -60,7 +60,7 @@ ERROR: for apache-ssl_apache_1  Cannot start service apache: OCI runtime create 
 オレオレ証明書の場合
 curl --insecure https://localhost/csp/sys/UtilHome.csp
 オレオレ認証局の場合
-curl --cacert ~/testca/int/intcert.pem https://httphost.localdomain/csp/sys/UtilHome.csp
+curl --cacert ~/testca/all.pem https://httphost.localdomain/csp/sys/UtilHome.csp
 <html>
 <head>
         <title>ログイン IRIS</title>
@@ -72,20 +72,20 @@ curl --cacert ~/testca/int/intcert.pem https://httphost.localdomain/csp/sys/Util
 ```
 
 ## 手元のPCからのテスト
-* 警告が出ても良い場合  
+* セキュリティ警告が出ても良い場合  
 手元のPCからChrome/FireFoxなどで下記URLにてアクセス可能であることを確認。  
 https://apacheが起動しているホスト/csp/sys/UtilHome.csp  
 
 
 * セキュリティ警告を出さないようにしたい場合  
-ルート証明書ストアにcacert.derを追加。  
+FireFox：cacert.pem, intcert.pemを認証局証明書としてインポート  
+Chrome:cacert.derを信頼されたルート証明機関,intcert.derを中間証明機関にそれぞれインポート。要再起動。  
 サーバ認証されているホスト名とURLが一致するように、実行するPCのhostsファイル(C:\Windows\System32\drivers\etc\hosts)に、下記のようにhttphost.localdomainを追加。
 ```
 54.250.169.xxx httphost httphost.localdomain
 ```
-
-繋がらない場合は、インバウンドルールにhttps(port:443)が存在していることを確認。なければ追加。  
-vscode+objectscript拡張からhttps:"true"で接続可能です。  
+awsで繋がらない場合は、インバウンドルールにhttps(port:443)が存在していることを確認。なければ追加。  
+vscode+objectscript拡張からhttps:"true"で接続可能。  
 
 ## 停止
 ```bash
