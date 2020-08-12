@@ -17,7 +17,7 @@ $ sudo usermod -aG docker your-user
 ```
 docker-compose導入済み。  
 https://docs.docker.com/compose/install/
-```Shell
+```bash
 $ docker-compose version
 docker-compose version 1.26.2, build eefe0d31
 docker-py version: 4.2.2
@@ -92,7 +92,7 @@ Chrome:cacert.derを信頼されたルート証明機関,intcert.derを中間証
 ```
 54.250.169.xxx httphost httphost.localdomain
 ```
-awsで繋がらない場合は、インバウンドルールにhttps(port:443)が存在していることを確認。なければ追加。  
+aws上のホストに繋がらない場合は、インバウンドルールにhttps(port:443)が存在していることを確認。なければ追加。  
 vscode+objectscript拡張からhttps:"true"で接続可能。  
 
 ## 停止
