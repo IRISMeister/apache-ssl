@@ -43,6 +43,9 @@ $ openssl req -x509 -nodes -days 1 -newkey rsa:2048 -subj /CN=* -keyout conf/ser
 ```bash
 ./setup.sh
 ```
+下記サイトを参考にさせていただいています。  
+https://dev.classmethod.jp/articles/aws_certificate_create_inport/  
+https://qiita.com/bashaway/items/ac5ece9618a613f37ce5  
 
 ## apache起動
 IRISが起動していること確認。接続先のIRISが別ホストに存在する場合は[iris.conf](conf/other/iris.conf)のURLを編集。

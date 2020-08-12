@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# 下記サイトからの流用
-# https://dev.classmethod.jp/articles/aws_certificate_create_inport/
-# https://qiita.com/bashaway/items/ac5ece9618a613f37ce5
-
 # ext/server.cnfのDNS.1と一致させること
 domain='httphost.localdomain'
 
