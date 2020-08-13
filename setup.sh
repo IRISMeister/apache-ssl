@@ -30,8 +30,8 @@ openssl req -new -key ${serverdir}server.key -outform PEM -keyform PEM  -sha256 
 #openssl x509 -req -in ${serverdir}server.csr -sha256 -CA ${intdir}intcert.pem -CAkey ${intdir}private/intkey.pem -set_serial 01 -days 3650 -out ${serverdir}server.crt
 openssl x509 -extfile ext/server.cnf -req -in ${serverdir}server.csr -sha256 -CA ${intdir}intcert.pem -CAkey ${intdir}private/intkey.pem -set_serial 01 -days 3650 -extensions v3_server -out ${serverdir}server.crt
 
-cp ${serverdir}server.crt ~/git/apache-ssl/conf/
-cp ${serverdir}server.key ~/git/apache-ssl/conf/
+cp ${serverdir}server.crt conf/
+cp ${serverdir}server.key conf/
 
 #AWS ACMへ証明書をインポートする
 #aws acm import-certificate --certificate file://${serverdir}server.crt --private-key file://${serverdir}server.key --certificate-chain file://${intdir}intcert.pem
