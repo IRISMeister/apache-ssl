@@ -14,6 +14,7 @@ https://docs.docker.com/engine/install/ubuntu/
 $ curl -fsSL https://get.docker.com -o get-docker.sh
 $ sudo sh get-docker.sh
 $ sudo usermod -aG docker your-user
+usermod反映のために再ログイン
 ```
 docker-compose導入済み。  
 https://docs.docker.com/compose/install/
