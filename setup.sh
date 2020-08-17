@@ -21,17 +21,20 @@ openssl req -new -key ${intdir}private/intkey.pem -sha256 -outform PEM -keyform 
 openssl x509 -extfile ext/intca.cnf -req -in ${intdir}int.csr -sha256 -CA ${cadir}cacert.pem -CAkey ${cadir}private/cakey.pem -set_serial 01  -extensions v3_ca  -days 3650 -out ${intdir}intcert.pem
 openssl x509 -inform PEM -outform DER -in ${intdir}intcert.pem -out ${intdir}intcert.der
 
-# cert chain for curl
-cat ${intdir}intcert.pem ${cadir}cacert.pem  > ${dir}all.pem
-
 #サーバ証明書の作成
 openssl genrsa 2048 > ${serverdir}server.key
 openssl req -new -key ${serverdir}server.key -outform PEM -keyform PEM  -sha256 -out ${serverdir}server.csr  -subj "/C=JP/ST=Osaka/O=xxxcorp/CN=${domain}"
 #openssl x509 -req -in ${serverdir}server.csr -sha256 -CA ${intdir}intcert.pem -CAkey ${intdir}private/intkey.pem -set_serial 01 -days 3650 -out ${serverdir}server.crt
-openssl x509 -extfile ext/server.cnf -req -in ${serverdir}server.csr -sha256 -CA ${intdir}intcert.pem -CAkey ${intdir}private/intkey.pem -set_serial 01 -days 3650 -extensions v3_server -out ${serverdir}server.crt
+openssl x509 -extfile ext/server.cnf -req -in ${serverdir}server.csr -sha256 -CA ${intdir}intcert.pem -CAkey ${intdir}private/intkey.pem -set_serial 04 -days 3650 -extensions v3_server -out ${serverdir}server.crt
 
-cp ${serverdir}server.crt conf/
-cp ${serverdir}server.key conf/
+# cert chain 
+cat ${intdir}intcert.pem ${cadir}cacert.pem  > ${dir}caint.crt
+cat ${serverdir}server.crt ${intdir}intcert.pem ${cadir}cacert.pem > ${dir}all.crt
+
+cp ${serverdir}server.crt ssl/
+cp ${serverdir}server.key ssl/
+cp ${dir}caint.crt ssl/
+cp ${dir}all.crt ssl/
 
 #AWS ACMへ証明書をインポートする
 #aws acm import-certificate --certificate file://${serverdir}server.crt --private-key file://${serverdir}server.key --certificate-chain file://${intdir}intcert.pem

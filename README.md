@@ -53,6 +53,11 @@ IRISが起動していること確認。接続先のIRISが別ホストに存在
 ```bash
 docker-compose up -d
 ```
+## nginx起動
+```bash
+docker-compose -f docker-compose-nginx.yml up -d
+```
+注)network_mode: :"host"を使用しているため、apacheとの同時起動は不可。適宜修正の事。
 
 下記のようなエラーが出る場合は、いったんコンテナを削除(docker-compose down)してから再実行。
 ```
@@ -66,7 +71,7 @@ curl --insecure https://localhost/csp/sys/UtilHome.csp
 ```
 オレオレ認証局の場合
 ```bash
-curl --cacert ~/testca/all.pem https://httphost.localdomain/csp/sys/UtilHome.csp
+curl --cacert ~/testca/ca/cacert.pem https://httphost.localdomain/csp/sys/UtilHome.csp
 ```
 アクセス成功の場合、下記のようなhtml(ログインページ)が出力されます。
 ```html

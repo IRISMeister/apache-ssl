@@ -8,13 +8,13 @@ services:
     network_mode: "host"
 
     volumes:
-    # ISC = InterSystems IRIS install dir
     - $PWD/htdocs:/usr/local/apache2/htdocs/ 
-    - $PWD/conf/other/:/usr/local/apache2/conf/other/
-    - $PWD/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
-    - $PWD/conf/extra/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
-    - $PWD/conf/server.crt:/usr/local/apache2/conf/server.crt
-    - $PWD/conf/server.key:/usr/local/apache2/conf/server.key
+    - $PWD/apache-conf/other/:/usr/local/apache2/conf/other/
+    - $PWD/apache-conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    - $PWD/apache-conf/extra/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+    - $PWD/ssl/server.crt:/usr/local/apache2/conf/server.crt
+    - $PWD/ssl/server.key:/usr/local/apache2/conf/server.key
+    - $PWD/ssl/caint.crt:/usr/local/apache2/conf/server-ca.crt
     
     environment:
     - TZ=JST-9
