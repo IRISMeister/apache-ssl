@@ -49,11 +49,12 @@ https://dev.classmethod.jp/articles/aws_certificate_create_inport/
 https://qiita.com/bashaway/items/ac5ece9618a613f37ce5  
 
 ## apache起動
-IRISが起動していること確認。接続先のIRISが別ホストに存在する場合は[iris.conf](conf/other/iris.conf)のURLを編集。
+実行前にIRISが起動していること確認。接続先のIRISが別ホストに存在する場合は[iris.conf](apache-conf/other/iris.conf)のURLを編集。
 ```bash
 docker-compose up -d
 ```
 ## nginx起動
+実行前にIRISが起動していること確認。接続先のIRISが別ホストに存在する場合は[ssl.conf](nginx-conf/ssl.conf)のURLを編集。
 ```bash
 docker-compose -f docker-compose-nginx.yml up -d
 ```
