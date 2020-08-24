@@ -8,7 +8,7 @@ services:
     network_mode: "host"
 
     volumes:
-    - $PWD/htdocs:/usr/share/nginx/html:ro 
+    - $PWD/htdocs/:/usr/share/nginx/html/:ro 
     - $PWD/nginx-conf/ssl.conf:/etc/nginx/conf.d/ssl.conf:ro
     - $PWD/ssl/all.crt:/etc/nginx/server.crt
     - $PWD/ssl/server.key:/etc/nginx/server.key
