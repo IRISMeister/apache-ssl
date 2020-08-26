@@ -1,5 +1,5 @@
 # apache-ssl
-Setup ssl for apache on Ubuntu 18.04.
+Setup ssl for Apache and nginx on Ubuntu 18.04.
 
 ## 前提
 openssl導入済み。  
