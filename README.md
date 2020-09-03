@@ -1,6 +1,8 @@
 # apache-ssl
 Setup ssl for Apache and nginx on Ubuntu 18.04.
 
+このレポジトリでは、[AWS上にて稼働中のInterSystems IRISの管理ポータルとの通信を暗号化する方法](https://jp.community.intersystems.com/node/480411/)で使用するソースコードと成果物を公開しています。
+
 ## 前提
 openssl導入済み。  
 ```bash
