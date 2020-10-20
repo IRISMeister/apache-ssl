@@ -62,10 +62,20 @@ docker-compose -f docker-compose-nginx.yml up -d
 ```
 注)network_mode: :"host"を使用しているため、apacheとの同時起動は不可。適宜修正の事。
 
+## エラー
 下記のようなエラーが出る場合は、いったんコンテナを削除(docker-compose down)してから再実行。
 ```
 ERROR: for apache-ssl_apache_1  Cannot start service apache: OCI runtime create failed: container_linux.go:349: starting container process caused "process_linux.go:449: container init caused \"rootfs_linux.go:58: mounting \\\"/conf/httpd.conf\\\" to rootfs \\\"/var/lib/docker/overlay2/9d242df810477b3937967434a6fa56bf84fcae54c12bd9a78b5a6e71fd2bb202/merged\\\" at \\\"/var/lib/docker/overlay2/9d242df810477b3937967434a6fa56bf84fcae54c12bd9a78b5a6e71fd2bb202/merged/usr/local/apache2/conf/httpd.conf\\\" caused \\\"not a directory\\\"\"": unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
 ```
+
+FireFoxで下記のようなエラーが発生することがあります。
+```
+httphost への接続中にエラーが発生しました。You are attempting to import a cert with the same issuer/serial as an existing cert, but that is not the same cert.
+エラーコード: SEC_ERROR_REUSED_ISSUER_AND_SERIAL
+```
+下記サイトを参考に対処してみてください。  
+https://support.mozilla.org/en-US/kb/Certificate-contains-the-same-serial-number-as-another-certificate
+
 
 ## ホスト上でのテスト
 オレオレ証明書の場合
