@@ -1,6 +1,6 @@
 {
     "objectscript.conn": {
-        "host": "irishost.localdomain",
+        "host": "httphost.localdomain",
         "https": true,
         "port": 443,
         "ns": "USER",
