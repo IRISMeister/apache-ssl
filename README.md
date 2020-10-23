@@ -5,6 +5,7 @@ Setup ssl for Apache and nginx on Ubuntu 18.04.
 
 ## 前提
 openssl導入済み。  
+(コンテナイメージのビルドをしたく無かったので、キー作成はDocker内で実行しません)
 ```bash
 $ openssl version
 OpenSSL 1.1.1  11 Sep 2018
@@ -37,30 +38,37 @@ $ cd apache-ssl
 ## サーバ証明書を作成
 * 簡単な方法(いわゆるオレオレ証明書)
 ```bash
-$ openssl req -x509 -nodes -days 1 -newkey rsa:2048 -subj /CN=* -keyout conf/server.key -out conf/server.crt
+$ openssl req -x509 -nodes -days 1 -newkey rsa:2048 -subj /CN=* -keyout ssl/self-server.key -out ssl/self-server.crt
+$ ls ssl
+self-server.crt  self-server.key
 ```
 
 * 自前のCA(いわゆるオレオレ認証局)を使用する方法  
-必要であればブラウザのセキュリティ警告をなくせる。  
-必要に応じてext/server.cnfのDNS.1及びsetup.shのdomain環境変数値を編集。
+必要であればブラウザ初回接続時のセキュリティ警告をなくせる。  
+ホスト名をhttphost.localdomain以外に変更したい場合、ext/server.cnfのDNS.1及びsetup.shのdomain環境変数値を編集する。
 ```bash
-./setup.sh
+$ ./setup.sh
+$ ls ssl
+all.crt  caint.crt server.crt  server.key
 ```
 下記サイトを参考にさせていただいています。  
 https://dev.classmethod.jp/articles/aws_certificate_create_inport/  
 https://qiita.com/bashaway/items/ac5ece9618a613f37ce5  
 
 ## apache起動
+setup.shを実行した事を前提にしています。  
 実行前にIRISが起動していること確認。接続先のIRISが別ホストに存在する場合は[iris.conf](apache-conf/other/iris.conf)のURLを編集。
 ```bash
 docker-compose up -d
 ```
 ## nginx起動
+setup.shを実行した事を前提にしています。  
+オレオレ証明書の場合は、docker-compose-nginx.ymlのコメント箇所を変更してください。
 実行前にIRISが起動していること確認。接続先のIRISが別ホストに存在する場合は[ssl.conf](nginx-conf/ssl.conf)のURLを編集。
 ```bash
 docker-compose -f docker-compose-nginx.yml up -d
 ```
-注)network_mode: :"host"を使用しているため、apacheとの同時起動は不可。適宜修正の事。
+注)(多少は高速になるのではないかという期待のもと)network_mode:"host"を使用しているため、apacheとの同時起動は不可です。必要に応じて適宜修正してください。
 
 ## エラー
 下記のようなエラーが出る場合は、いったんコンテナを削除(docker-compose down)してから再実行。
@@ -99,20 +107,24 @@ curl --cacert ~/testca/ca/cacert.pem https://httphost.localdomain/csp/sys/UtilHo
 ```
 
 ## 手元のPCからのテスト
-* セキュリティ警告が出ても良い場合  
+* ブラウザのセキュリティ警告が出ても良い場合  
 手元のPCからChrome/FireFoxなどで下記URLにてアクセス可能であることを確認。  
 https://apacheが起動しているホスト/csp/sys/UtilHome.csp  
 
 
-* セキュリティ警告を出さないようにしたい場合  
+* ブラウザのセキュリティ警告を出さないようにしたい場合  
+1. 証明書をインポート  
 FireFox：cacert.pem, intcert.pemを認証局証明書としてインポート  
 Chrome:cacert.derを信頼されたルート証明機関,intcert.derを中間証明機関にそれぞれインポート。要再起動。  
-サーバ認証されているホスト名とURLが一致するように、実行するPCのhostsファイル(C:\Windows\System32\drivers\etc\hosts)に、下記のようにhttphost.localdomainを追加。
+2. 名前解決  
+サーバ認証で使用しているホスト名とアクセスするホスト名(URL)が一致するように、実行するPCのhostsファイル(WindowsであればC:\Windows\System32\drivers\etc\hosts)に、下記のようにhttphost.localdomainを追加。
 ```
 54.250.169.xxx httphost httphost.localdomain
 ```
-aws上のホストに繋がらない場合は、インバウンドルールにhttps(port:443)が存在していることを確認。なければ追加。  
-vscode+objectscript拡張からhttps:"true"で接続可能。  
+3. 下記のURLにアクセス。  
+https://httphost.localdomain/csp/sys/UtilHome.csp  
+
+> apche/nginxをaws上のホストで稼働させている場合、インバウンドルールでhttps(port:443)を許可しないと接続出来ません。  
 
 ## 停止
 ```bash
@@ -120,7 +132,8 @@ docker-compose down
 ```
 
 ## 参考
-apacheのコンテナからオリジナルのconfを抽出する方法
+apacheのコンテナからオリジナルのconfを抽出する方法　　
+conf/httpd.conf, conf/extra/httpd-ssl.confの修正箇所は非常に少ないです。修正箇所を知るには下記で抽出したファイルとdiffをとってください。
 ```bash
 $ docker run --rm httpd:2.4 cat /usr/local/apache2/conf/httpd.conf > conf/httpd.conf
 $ docker run --rm httpd:2.4 cat /usr/local/apache2/conf/extra/httpd-ssl.conf > conf/extra/httpd-ssl.conf

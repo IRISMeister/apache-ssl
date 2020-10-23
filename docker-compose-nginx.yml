@@ -12,6 +12,9 @@ services:
     - $PWD/nginx-conf/ssl.conf:/etc/nginx/conf.d/ssl.conf:ro
     - $PWD/ssl/all.crt:/etc/nginx/server.crt
     - $PWD/ssl/server.key:/etc/nginx/server.key
+    # when self-signed
+    #- $PWD/ssl/self-server.crt:/etc/nginx/server.crt
+    #- $PWD/ssl/self-server.key:/etc/nginx/server.key
     
     environment:
     - TZ=JST-9
