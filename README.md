@@ -51,6 +51,13 @@ $ ./setup.sh
 $ ls ssl
 all.crt  caint.crt server.crt  server.key
 ```
+setup.shは引数を3個取ります。省略時値はhttphost.localdomain,01,01です。
+```bash
+$ ./setup.sh [servername] [中間証明書のシリアルナンバー] [サーバ証明書のシリアルナンバー]
+$ ./setup.sh 
+$ ./setup.sh irishost.test 01 02
+```
+
 下記サイトを参考にさせていただいています。  
 https://dev.classmethod.jp/articles/aws_certificate_create_inport/  
 https://qiita.com/bashaway/items/ac5ece9618a613f37ce5  
@@ -82,8 +89,8 @@ httphost への接続中にエラーが発生しました。You are attempting t
 エラーコード: SEC_ERROR_REUSED_ISSUER_AND_SERIAL
 ```
 下記サイトを参考に対処してみてください。  
-https://support.mozilla.org/en-US/kb/Certificate-contains-the-same-serial-number-as-another-certificate
-
+https://support.mozilla.org/en-US/kb/Certificate-contains-the-same-serial-number-as-another-certificate  
+あるいは、第2引数,第3引数を変えてみてください。
 
 ## ホスト上でのテスト
 オレオレ証明書の場合
