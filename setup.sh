@@ -52,13 +52,15 @@ openssl req -new -key ${serverdir}server.key -outform PEM -keyform PEM  -sha256 
 openssl x509 -extfile ext/server.cnf -req -in ${serverdir}server.csr -sha256 -CA ${intdir}intcert.pem -CAkey ${intdir}private/intkey.pem -set_serial $server_serial -days 3650 -extensions v3_server -out ${serverdir}server.crt
 
 # cert chain 
-cat ${intdir}intcert.pem ${cadir}cacert.pem  > ${dir}caint.crt
-cat ${serverdir}server.crt ${intdir}intcert.pem ${cadir}cacert.pem > ${dir}all.crt
+cat ${intdir}intcert.pem ${cadir}cacert.pem  > ssl/caint.crt
+cat ${serverdir}server.crt ${intdir}intcert.pem ${cadir}cacert.pem > ssl/all.crt
 
 cp ${serverdir}server.crt ssl/
 cp ${serverdir}server.key ssl/
-cp ${dir}caint.crt ssl/
-cp ${dir}all.crt ssl/
+cp ${cadir}cacert.der ssl/
+cp ${intdir}intcert.der ssl/
+cp ${intdir}intcert.pem ssl/
+cp ${cadir}cacert.pem ssl/
 
 #AWS ACMへ証明書をインポートする
 #aws acm import-certificate --certificate file://${serverdir}server.crt --private-key file://${serverdir}server.key --certificate-chain file://${intdir}intcert.pem
