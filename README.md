@@ -45,12 +45,12 @@ self-server.crt  self-server.key
 
 * 自前のCA(いわゆるオレオレ認証局)を使用する方法  
 必要であればブラウザ初回接続時のセキュリティ警告をなくせる。  
-ホスト名をhttphost.localdomain以外に変更したい場合、ext/server.cnfのDNS.1及びsetup.shのdomain環境変数値を編集する。
 ```bash
 $ ./setup.sh
 $ ls ssl
 all.crt  caint.crt server.crt  server.key
 ```
+ホスト名をhttphost.localdomain以外に変更したい場合、引数を指定します。ここで指定したホスト名で、ext/server.cnfのDNS.1が上書きされます。  
 setup.shは引数を3個取ります。省略時値はhttphost.localdomain,01,01です。
 ```bash
 $ ./setup.sh [servername] [中間証明書のシリアルナンバー] [サーバ証明書のシリアルナンバー]
