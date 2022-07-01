@@ -6,3 +6,4 @@ subjectAltName = @alt_names
 
 [alt_names]
 DNS.1 = dnsname1
+DNS.2 = dnsname2
