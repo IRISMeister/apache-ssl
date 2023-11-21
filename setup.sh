@@ -8,6 +8,12 @@ server_serial=01
 # Country Name, State, Organization Nameの指定
 subj=`cat ./subj.txt`
 
+if [ $# = 0 ]; then
+    echo "DNS.1 name:$servername"
+    # Extention [alt_names]のDNS.1を設定
+    sed -e "s/dnsname1/$servername/" ext/server.cnf.template > ext/server.cnf
+fi
+
 if [ ! -z "$1" ]; then
     servername=$1
     echo "DNS.1 name:$servername"
